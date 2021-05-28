@@ -8,11 +8,11 @@ appRouter.get('/', (req, res) => {
 });
 
 // Users
-appRouter.get("/user", getUsers);
-appRouter.get('/user/:id', getUserById);
-appRouter.post("/user", postUser);
-appRouter.delete('/user/:id', deleteUser);
-appRouter.put('/user/:id', updateUser);
-// Users
+appRouter.get("/users", getUsers);
+appRouter.get('/users/:id', getUserById);
+appRouter.post("/users", postUser);
+appRouter.delete('/users/:id', deleteUser);
+appRouter.put('/users/:id', updateUser);
+// Userss
 
 export default appRouter;
