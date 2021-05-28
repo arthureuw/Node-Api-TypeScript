@@ -1,30 +1,30 @@
-import {Request, Response} from 'express';
-import {User, UserModel} from '../model/UserModel';
-import {deleteOneBy, findManyBy, findOneBy, saveData, updateOneBy} from '../Service/MongooseService';
+import { Request, Response } from 'express';
+import { User, UserModel } from '../Model/UserModel';
+import { deleteOneBy, findManyBy, findOneBy, saveData, updateOneBy } from '../Service/MongooseService';
 
 export const postUser = async (req: Request, res: Response): Promise<void> => {
-    const {mail} = req.body;
+    const { mail } = req.body;
 
     if (!mail) {
         res.status(400).json({
             data: {},
-            error: {code: 'EMAIL_REQUIRED'},
+            error: { code: 'EMAIL_REQUIRED' },
         });
         return;
     }
 
     try {
-        const existingUser = await findOneBy<User>({model: UserModel, condition: {mail}});
+        const existingUser = await findOneBy<User>({ model: UserModel, condition: { mail } });
 
         if (existingUser) {
             res.status(400).json({
                 data: {},
-                error: {code: 'USER_EXISTS'},
+                error: { code: 'USER_EXISTS' },
             });
             return;
         }
 
-        const newUser = await saveData<User>({params: req.body, model: UserModel});
+        const newUser = await saveData<User>({ params: req.body, model: UserModel });
         res.status(200).json({
             data: newUser,
             error: {},
@@ -35,7 +35,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
-    const users = await findManyBy<User>({model: UserModel, condition: {}});
+    const users = await findManyBy<User>({ model: UserModel, condition: {} });
 
     res.status(200).json({
         data: users,
@@ -44,13 +44,13 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const getUserById = async (req: Request, res: Response): Promise<void> => {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
-        const user = await findOneBy<User>({model: UserModel, condition: {_id: id}});
+        const user = await findOneBy<User>({ model: UserModel, condition: { _id: id } });
         if (!user) {
             res.status(200).json({
                 data: {},
-                error: {code: 'CANNOT_GET_USER'},
+                error: { code: 'CANNOT_GET_USER' },
             });
             return;
         }
@@ -64,12 +64,12 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
 };
 
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
         const userUpdate = await updateOneBy<User>({
             model: UserModel,
-            condition: {_id: id},
+            condition: { _id: id },
             set: {
                 ...req.body,
             },
@@ -78,7 +78,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
         if (!userUpdate) {
             res.status(400).json({
                 data: {},
-                error: {code: 'CANNOT_UPDATE_USER'},
+                error: { code: 'CANNOT_UPDATE_USER' },
             });
 
             return;
@@ -94,15 +94,15 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
 };
 
 export const deleteUser = async (req: Request, res: Response): Promise<void> => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
-        const deletion = await deleteOneBy({model: UserModel, condition: {_id: id}});
+        const deletion = await deleteOneBy({ model: UserModel, condition: { _id: id } });
 
         if (!deletion) {
             res.status(400).json({
                 data: {},
-                errors: {code: 'CANT_DELETE_USER'},
+                errors: { code: 'CANT_DELETE_USER' },
             });
         }
 
