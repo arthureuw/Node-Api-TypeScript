@@ -3,9 +3,9 @@ import { User, UserModel } from '../Model/UserModel';
 import { deleteOneBy, findManyBy, findOneBy, saveData, updateOneBy } from '../Service/MongooseService';
 
 export const postUser = async (req: Request, res: Response): Promise<void> => {
-    const { mail } = req.body;
+    const { email } = req.body;
 
-    if (!mail) {
+    if (!email) {
         res.status(400).json({
             data: {},
             error: { code: 'EMAIL_REQUIRED' },
@@ -14,7 +14,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
     }
 
     try {
-        const existingUser = await findOneBy<User>({ model: UserModel, condition: { mail } });
+        const existingUser = await findOneBy<User>({ model: UserModel, condition: { email } });
 
         if (existingUser) {
             res.status(400).json({
